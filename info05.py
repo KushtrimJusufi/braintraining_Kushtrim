@@ -2,6 +2,7 @@
 # JCY oct 23
 # PRO DB PY
 import math
+from tkinter import *
 import tkinter as tk
 from tkinter.messagebox import showinfo          # Les alertes
 import random
@@ -191,6 +192,8 @@ def sl_v(event):
 
 
 def display_timer():
+    global duration
+
     duration=datetime.datetime.now()-start_date #elapsed time since beginning, in time with decimals
     duration_s=int(duration.total_seconds()) #idem but in seconds (integer)
     #display min:sec (00:13)
@@ -258,8 +261,9 @@ def open_window_info_05(window):
     def save_game(event):
         pseudo = entry_pseudo.get()
         print(pseudo)
-        database.save_game_db(pseudo, exercise, start_date, display_timer(), nbtrials, nbsuccess)
+        database.save_game_db(pseudo, exercise, start_date, duration, nbtrials, nbsuccess)
         print("dans save")
+        Tk.destroy(window_info05)
 
     # first call of next_point
     display_wheel_color()

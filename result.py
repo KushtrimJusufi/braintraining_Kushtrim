@@ -2,10 +2,9 @@ import tkinter as tk
 from tkinter import *
 from database import *
 
-'''window = tk.Tk()
-window.title("affichage")
-window.geometry("1000x900")'''
 
+categorie = (("NBLignes"), ("Temps total"), ("Nb OK"), ("Nb total"))
+# requête SQL qui va prendre les données de la base de données
 def data_result():
     query = ("select name, exercise, date_hour, duration, nbtrials, nbsuccess from result")
     cursor = db_connection.cursor()
@@ -14,14 +13,26 @@ def data_result():
     print(data)
     return data
 
-def disaplay(mytuple):
+# requête SQL qui va prendre le total des résultats
+def data_total():
+    query = ("select count(id), SEC_TO_TIME(SUM(TIME_TO_SEC(result.duration))), sum(nbtrials) ,sum(nbsuccess) from result")
+    cursor = db_connection.cursor()
+    cursor.execute(query)
+    total = cursor.fetchall()
+    print(total)
+    return total
+
+# fonction qui va creer un tableau avec les données
+def disaplay(mytuple, frame):
     for line in range(0,len(mytuple)):
         for col in range(0, len(mytuple[line])):
-            (tk.Label(frame3, text=mytuple[line][col], width=15, font=("Arial", 10)).grid(row=line, column=col, padx=2, pady=2))
+            (tk.Label(frame, text=mytuple[line][col], width=15, font=("Arial", 14)).grid(row=line, column=col, padx=2, pady=2))
 
 # cette fonction crée une fenêtre qui affiche les résultats
 def open_window_result(window):
-    global frame3
+    global frame3_1
+    global frame5_1
+    global frame5_2
 
     window_result = tk.Toplevel(window)
 
@@ -75,7 +86,7 @@ def open_window_result(window):
     frame2_2 = tk.Frame(frame2)
     frame2_2.pack(side=BOTTOM, fill=X)
 
-    # inutilisable pour l'instant
+    # bouton inutilisable pour l'instant
     but_result = tk.Button(frame2_2, text="Voir résultat")
     but_result.pack(side=LEFT,)
 
@@ -83,14 +94,42 @@ def open_window_result(window):
     frame3 = tk.Frame(window_result)
     frame3.pack()
 
+    # frame pour les catégories
+    frame3_1 = tk.Frame(frame3)
+    frame3_1.pack(side=BOTTOM)
+
+
+    # frame pour les résultats
+    frame3_2 = tk.Frame(frame3)
+    frame3_2.pack(side=BOTTOM)
+
     # frame pour le label total
     frame4 = tk.Frame(window_result)
-    frame4.pack()
+    frame4.pack(pady=5)
 
+    # label total
+    lbl_total = tk.Label(frame4, text="Total", font=("Arial", 15))
+    lbl_total.pack()
+
+    # frame pour le total des résultats
     frame5 = tk.Frame(window_result)
     frame5.pack()
 
+    frame5_1 = tk.Frame(frame5)
+    frame5_1.pack(side = TOP)
+
+    frame5_2 = tk.Frame(frame5)
+    frame5_2.pack()
+
+
+
+    # affiche le tableau des résultats
     data_result()
     data = data_result()
+    disaplay(data, frame3_1)
 
-    disaplay(data)
+    # affiche le tableau des totals
+    data_total()
+    total = data_total()
+    disaplay(categorie, frame5_1)
+    disaplay(total, frame5_2)
