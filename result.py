@@ -1,4 +1,5 @@
 import tkinter as tk
+import CRUD
 from tkinter import *
 from database import *
 
@@ -32,7 +33,7 @@ def data_result(pseudo):
         if entry_date_start.get() != "" and i > 0:
             condition += f" and date_hour LIKE '{entry_date_start.get()}%' "
         elif entry_date_start.get() != "" and i == 0:
-            condition += f" where date_hour LIKE '{entry_date_start.get()}%' "
+            condition += f" where date_hour LIKE '%{entry_date_start.get()}%' "
             i += 1
 
         query = "select name, exercise, date_hour, duration, nbtrials, nbsuccess from result"
