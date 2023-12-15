@@ -161,6 +161,7 @@ def open_window_result(window):
     frame5_2 = tk.Frame(frame5)
     frame5_2.pack()
 
+    # fonction qui permet d'ouvrir la fenêtre de la creation
     def open_create(event):
         CRUD.open_window_CRUD(window_result)
         print("display_result")
@@ -204,5 +205,5 @@ def open_window_result(window):
 
     # bouton qui ouvre une fenêtre avec les résultats
     but_result = tk.Button(frame2_2, text="Créer")
-    but_result.pack(side=LEFT, )
+    but_result.pack(side=LEFT, padx=20 )
     but_result.bind("<Button-1>", open_create)
