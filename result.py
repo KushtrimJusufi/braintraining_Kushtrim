@@ -1,5 +1,5 @@
 import tkinter as tk
-import CRUD
+import create
 from tkinter import *
 from database import *
 
@@ -205,5 +205,5 @@ def open_window_result(window):
 
     # bouton qui ouvre une fenêtre avec les résultats
     but_result = tk.Button(frame2_2, text="Créer")
-    but_result.pack(side=LEFT, padx=20 )
+    but_result.pack(side=LEFT, padx=20)
     but_result.bind("<Button-1>", open_create)
