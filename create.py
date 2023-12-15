@@ -1,7 +1,31 @@
-
 from result import *
 from tkinter import *
 from database import *
+
+
+# fonction qui supprime un résultat
+def delete_result(delete):
+    date_complet = f"{entry_dateY.get()}-{entry_dateM.get()}-{entry_dateD.get()}"
+
+    # duration complet
+    duration_complet = f"00:{entry_durationM.get()}:{entry_durationS.get()}"
+
+    # les valeurs pour le insert into
+    info = f" where name = '{entry_pseudo.get()}' and exercise = '{entry_exercise.get()}'and date_hour = '{date_complet}' and duration = '{duration_complet}' and nbtrials = '{entry_nb_total.get()}' and nbsuccess = '{entry_nb_W.get()}'"
+
+    # une requête SQL qui va prendre l'ID du résultat
+    query = ("select id from result")
+    query = query + info
+    cursor = db_connection.cursor()
+    cursor.execute(query, )
+    id = cursor.fetchone()
+    id = id[0]
+    print(id)
+
+    # une requête SQL qui va supprimer un résultat
+    query = ("delete from result where id = (%s)")
+    cursor = db_connection.cursor()
+    cursor.execute(query, (id,))
 
 # fonction qui crée un résultat
 def create_result(create):
@@ -9,7 +33,7 @@ def create_result(create):
     date_complet = f"{entry_dateY.get()}-{entry_dateM.get()}-{entry_dateD.get()}"
 
     #duration complet
-    duration_complet = f"{entry_durationM.get()}:{entry_durationS.get()}"
+    duration_complet = f"00:{entry_durationM.get()}:{entry_durationS.get()}"
 
     # les valeurs pour le insert into
     create = f" values ('{entry_pseudo.get()}', '{entry_exercise.get()}', '{date_complet}', '{duration_complet}', '{entry_nb_total.get()}', '{entry_nb_W.get()}')"
@@ -38,7 +62,7 @@ def open_window_CRUD(window_result):
     window_CRUD.configure(bg=hex_color)
 
     window_CRUD.title("creation d'un résultat")
-    window_CRUD.geometry("900x50")
+    window_CRUD.geometry("1100x50")
 
     # entry qui servent à creer une donnée
     frame1 = tk.Frame(window_CRUD)
@@ -118,5 +142,10 @@ def open_window_CRUD(window_result):
 
     # bouton qui va créer le résultat
     btn_create = tk.Button(frame1, text="create", font=("Arial", 13))
-    btn_create.pack(side=BOTTOM, padx=30)
+    btn_create.pack(side=LEFT, padx=30)
     btn_create.bind("<Button-1>", create_result)
+
+    # bouton qui va supprimer le résultat
+    btn_create = tk.Button(frame1, text="supprimer", font=("Arial", 13))
+    btn_create.pack(side=LEFT, padx=30)
+    btn_create.bind("<Button-1>", delete_result)

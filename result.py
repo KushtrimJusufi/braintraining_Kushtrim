@@ -163,7 +163,7 @@ def open_window_result(window):
 
     # fonction qui permet d'ouvrir la fenêtre de la creation
     def open_create(event):
-        CRUD.open_window_CRUD(window_result)
+        create.open_window_CRUD(window_result)
         print("display_result")
 
     # avoir le pseudo dans l'entry
@@ -204,6 +204,6 @@ def open_window_result(window):
     but_result.bind("<Button-1>", change_the_result)
 
     # bouton qui ouvre une fenêtre avec les résultats
-    but_result = tk.Button(frame2_2, text="Créer")
+    but_result = tk.Button(frame2_2, text="Modify")
     but_result.pack(side=LEFT, padx=20)
     but_result.bind("<Button-1>", open_create)
