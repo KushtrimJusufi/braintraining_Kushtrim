@@ -8,6 +8,7 @@ categorie_result = [('Elève', 'Exercice', 'Date heure', 'Temps', 'nb Total', 'n
 
 # les catégorie des totales
 categorie_total = [('NBLignes', 'Temps total', 'Nb OK', 'Nb total')]
+
 # requête SQL qui va prendre les données de la base de données
 def data_result(pseudo):
     condition = ""
@@ -160,6 +161,10 @@ def open_window_result(window):
     frame5_2 = tk.Frame(frame5)
     frame5_2.pack()
 
+    def open_create(event):
+        CRUD.open_window_CRUD(window_result)
+        print("display_result")
+
     # avoir le pseudo dans l'entry
     pseudo = entry_pseudo.get()
 
@@ -196,3 +201,8 @@ def open_window_result(window):
     but_result = tk.Button(frame2_2, text="Voir résultat")
     but_result.pack(side=LEFT, )
     but_result.bind("<Button-1>", change_the_result)
+
+    # bouton qui ouvre une fenêtre avec les résultats
+    but_result = tk.Button(frame2_2, text="Créer")
+    but_result.pack(side=LEFT, )
+    but_result.bind("<Button-1>", open_create)
