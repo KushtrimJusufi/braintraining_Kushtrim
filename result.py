@@ -1,5 +1,5 @@
 import tkinter as tk
-import create
+import modify
 from tkinter import *
 from database import *
 
@@ -7,7 +7,7 @@ from database import *
 categorie_result = [('Elève', 'Exercice', 'Date heure', 'Temps', 'nb Total', 'nb OK')]
 
 # les catégorie des totales
-categorie_total = [('NBLignes', 'Temps total', 'Nb OK', 'Nb total')]
+categorie_total = [('NBLignes', 'Temps total', 'Nb total', 'Nb OK')]
 
 # requête SQL qui va prendre les données de la base de données
 def data_result(pseudo):
@@ -47,18 +47,39 @@ def data_result(pseudo):
 
 # requête SQL qui va prendre le total des résultats
 def data_total(e):
-    if entry_pseudo.get() == "":
+    condition = ""
+    i = 0
+
+    if entry_pseudo.get() == "" and entry_exercice.get() == "" and entry_date_start.get() == "" and entry_date_end.get() == "":
         query = ("select count(id), SEC_TO_TIME(SUM(TIME_TO_SEC(result.duration))), sum(nbtrials) ,sum(nbsuccess) from result")
         cursor = db_connection.cursor()
         cursor.execute(query)
         total = cursor.fetchall()
         return total
     else:
-        query = ("select count(id), SEC_TO_TIME(SUM(TIME_TO_SEC(result.duration))), sum(nbtrials) ,sum(nbsuccess) from result where name = (%s)")
+        if entry_pseudo.get() != "":
+            condition += f" where name = '{entry_pseudo.get()}' "
+            i += 1
+
+        if entry_exercice.get() != "" and i > 0:
+            condition += f" and exercise = '{entry_exercice.get()}' "
+        elif entry_exercice.get() != "" and i == 0:
+            condition += f" where exercise = '{entry_exercice.get()}' "
+            i += 1
+
+        if entry_date_start.get() != "" and i > 0:
+            condition += f" and date_hour LIKE '{entry_date_start.get()}%' "
+        elif entry_date_start.get() != "" and i == 0:
+            condition += f" where date_hour LIKE '%{entry_date_start.get()}%' "
+            i += 1
+
+        query = ("select count(id), SEC_TO_TIME(SUM(TIME_TO_SEC(result.duration))), sum(nbtrials) ,sum(nbsuccess) from result")
+        query = query + condition
+        print(query)
         cursor = db_connection.cursor()
-        cursor.execute(query, (e,))
-        total = cursor.fetchall()
-        return total
+        cursor.execute(query, )
+        data = cursor.fetchall()
+        return data
 
 
 # fonction qui va creer un tableau avec les données
@@ -163,7 +184,7 @@ def open_window_result(window):
 
     # fonction qui permet d'ouvrir la fenêtre de la creation
     def open_create(event):
-        create.open_window_CRUD(window_result)
+        modify.open_window_CRUD(window_result)
         print("display_result")
 
     # avoir le pseudo dans l'entry

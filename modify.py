@@ -11,7 +11,7 @@ def delete_result(delete):
     duration_complet = f"00:{entry_durationM.get()}:{entry_durationS.get()}"
 
     # les valeurs pour le insert into
-    info = f" where name = '{entry_pseudo.get()}' and exercise = '{entry_exercise.get()}'and date_hour = '{date_complet}' and duration = '{duration_complet}' and nbtrials = '{entry_nb_total.get()}' and nbsuccess = '{entry_nb_W.get()}'"
+    info = f" where name = '{entry_pseudo.get()}' and exercise = '{entry_exercise.get()}'and date_hour LIKE '%{date_complet}%' and duration = '{duration_complet}' and nbtrials = '{entry_nb_total.get()}' and nbsuccess = '{entry_nb_W.get()}'"
 
     # une requête SQL qui va prendre l'ID du résultat
     query = ("select id from result")
@@ -146,6 +146,6 @@ def open_window_CRUD(window_result):
     btn_create.bind("<Button-1>", create_result)
 
     # bouton qui va supprimer le résultat
-    btn_create = tk.Button(frame1, text="supprimer", font=("Arial", 13))
-    btn_create.pack(side=LEFT, padx=30)
-    btn_create.bind("<Button-1>", delete_result)
+    btn_earse = tk.Button(frame1, text="supprimer", font=("Arial", 13))
+    btn_earse.pack(side=LEFT, padx=30)
+    btn_earse.bind("<Button-1>", delete_result)
